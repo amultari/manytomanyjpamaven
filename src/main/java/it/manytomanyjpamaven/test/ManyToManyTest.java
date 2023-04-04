@@ -1,6 +1,6 @@
 package it.manytomanyjpamaven.test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import it.manytomanyjpamaven.dao.EntityManagerUtil;
 import it.manytomanyjpamaven.model.Ruolo;
@@ -59,7 +59,7 @@ public class ManyToManyTest {
 	private static void testInserisciNuovoUtente(UtenteService utenteServiceInstance) throws Exception {
 		System.out.println(".......testInserisciNuovoUtente inizio.............");
 
-		Utente utenteNuovo = new Utente("pippo.rossi", "xxx", "pippo", "rossi", new Date());
+		Utente utenteNuovo = new Utente("pippo.rossi", "xxx", "pippo", "rossi", LocalDate.now());
 		utenteServiceInstance.inserisciNuovo(utenteNuovo);
 		if (utenteNuovo.getId() == null)
 			throw new RuntimeException("testInserisciNuovoUtente fallito ");
@@ -76,7 +76,7 @@ public class ManyToManyTest {
 			throw new RuntimeException("testCollegaUtenteARuoloEsistente fallito: ruolo inesistente ");
 
 		// mi creo un utente inserendolo direttamente su db
-		Utente utenteNuovo = new Utente("mario.bianchi", "JJJ", "mario", "bianchi", new Date());
+		Utente utenteNuovo = new Utente("mario.bianchi", "JJJ", "mario", "bianchi", LocalDate.now());
 		utenteServiceInstance.inserisciNuovo(utenteNuovo);
 		if (utenteNuovo.getId() == null)
 			throw new RuntimeException("testInserisciNuovoUtente fallito: utente non inserito ");
@@ -94,7 +94,7 @@ public class ManyToManyTest {
 		System.out.println(".......testModificaStatoUtente inizio.............");
 
 		// mi creo un utente inserendolo direttamente su db
-		Utente utenteNuovo = new Utente("mario1.bianchi1", "JJJ", "mario1", "bianchi1", new Date());
+		Utente utenteNuovo = new Utente("mario1.bianchi1", "JJJ", "mario1", "bianchi1", LocalDate.now());
 		utenteServiceInstance.inserisciNuovo(utenteNuovo);
 		if (utenteNuovo.getId() == null)
 			throw new RuntimeException("testModificaStatoUtente fallito: utente non inserito ");
@@ -120,7 +120,7 @@ public class ManyToManyTest {
 			throw new RuntimeException("testRimuoviRuoloDaUtente fallito: ruolo inesistente ");
 
 		// mi creo un utente inserendolo direttamente su db
-		Utente utenteNuovo = new Utente("aldo.manuzzi", "pwd@2", "aldo", "manuzzi", new Date());
+		Utente utenteNuovo = new Utente("aldo.manuzzi", "pwd@2", "aldo", "manuzzi", LocalDate.now());
 		utenteServiceInstance.inserisciNuovo(utenteNuovo);
 		if (utenteNuovo.getId() == null)
 			throw new RuntimeException("testRimuoviRuoloDaUtente fallito: utente non inserito ");
@@ -139,7 +139,8 @@ public class ManyToManyTest {
 		if (!confermoRuoloPresente)
 			throw new RuntimeException("testRimuoviRuoloDaUtente fallito: utente e ruolo non associati ");
 
-		// ora provo la rimozione vera e propria ma poi forzo il caricamento per fare un confronto 'pulito'
+		// ora provo la rimozione vera e propria ma poi forzo il caricamento per fare un
+		// confronto 'pulito'
 		utenteServiceInstance.rimuoviRuoloDaUtente(utenteReloaded.getId(), ruoloEsistenteSuDb.getId());
 		utenteReloaded = utenteServiceInstance.caricaUtenteSingoloConRuoli(utenteNuovo.getId());
 		if (!utenteReloaded.getRuoli().isEmpty())
